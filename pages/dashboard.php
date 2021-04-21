@@ -1,16 +1,21 @@
-<?php 
+<?php
 session_start();
-require_once('../config/config.php');
-if(!$_SESSION['loggedin']){
+require_once ('../config/config.php');
+if (!$_SESSION['loggedin'])
+{
     header("location: ./login.php");
     exit;
 }
 $user_id = $_SESSION['id'];
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-    if(!$_POST['name'] ||!$_POST['email'] ||!$_POST['address'] ||!$_POST['birthdate'] ||!$_POST['occ'] ){
+if ($_SERVER["REQUEST_METHOD"] == "POST")
+{
+    if (!$_POST['name'] || !$_POST['email'] || !$_POST['address'] || !$_POST['birthdate'] || !$_POST['occ'])
+    {
         echo "<script>alert('All input must be inserted')</script>";
-    }else{
+    }
+    else
+    {
         $name = htmlspecialchars($_POST['name']);
         $email = htmlspecialchars($_POST['email']);
         $address = htmlspecialchars($_POST['address']);
@@ -26,18 +31,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         WHERE id_user = '$user_id'
         ");
 
-        if($query_update){
+        if ($query_update)
+        {
             echo '<script>
             alert("Your data has been updated succesfuly");
             </script>';
-        }else{
-            echo'error!';
+        }
+        else
+        {
+            echo 'error!';
         }
     }
 }
 
 $userdata = mysqli_query($link, "SELECT name_user, email_user, address_user, birthdate_user, occupation_user FROM tb_user WHERE id_user = '$user_id'");
-$datauser  = mysqli_fetch_assoc($userdata);
+$datauser = mysqli_fetch_assoc($userdata);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -75,18 +83,20 @@ $datauser  = mysqli_fetch_assoc($userdata);
                             </tr>
                         </thead>
                         <tbody>
-                        <?php 
-                        $usersdata = mysqli_fetch_all(mysqli_query($link, 'SELECT name_user, email_user, occupation_user FROM tb_user'), MYSQLI_ASSOC);
-                        $i = 1;
-                        foreach($usersdata as $row) : ?>
+                        <?php
+$usersdata = mysqli_fetch_all(mysqli_query($link, 'SELECT name_user, email_user, occupation_user FROM tb_user') , MYSQLI_ASSOC);
+$i = 1;
+foreach ($usersdata as $row): ?>
                             <tr>
-                                <th scope="row"><?= $i ?></th>
-                                <td><?= $row['name_user'] ?></td>
-                                <td><?= $row['email_user'] ?></td>
-                                <td><?= $row['occupation_user'] ?></td>
-                                <td><a href="./getUserdata.php?email=<?= $row['email_user'] ?>">View</a></td>
+                                <th scope="row"><?=$i
+?></th>
+                                <td><?=$row['name_user'] ?></td>
+                                <td><?=$row['email_user'] ?></td>
+                                <td><?=$row['occupation_user'] ?></td>
+                                <td><a href="./getUserdata.php?email=<?=$row['email_user'] ?>">View</a></td>
                             </tr>
-                            <?php $i++; endforeach; ?> 
+                            <?php $i++;
+endforeach; ?> 
                         </tbody>
                     </table>
                 </div>
@@ -101,14 +111,14 @@ $datauser  = mysqli_fetch_assoc($userdata);
                     <div class="mb-3 row">
                         <label for="inputPassword" class="col-sm-2 col-form-label">Full Name</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" value="<?= $datauser['name_user'] ?>" name="name" >
+                            <input type="text" class="form-control" value="<?=$datauser['name_user'] ?>" name="name" >
                         </div>
                     </div>
 
                     <div class="mb-3 row">
                         <label for="inputPassword" class="col-sm-2 col-form-label">Email</label>
                         <div class="col-sm-10">
-                            <input type="email" class="form-control" value="<?= $datauser['email_user'] ?>" 
+                            <input type="email" class="form-control" value="<?=$datauser['email_user'] ?>" 
                             name="email">
                         </div>
                     </div>
@@ -116,21 +126,21 @@ $datauser  = mysqli_fetch_assoc($userdata);
                     <div class="mb-3 row">
                         <label for="inputPassword" class="col-sm-2 col-form-label">Address</label>
                         <div class="col-sm-10">
-                            <textarea class="form-control" name="address"><?= $datauser['address_user'] ?></textarea>
+                            <textarea class="form-control" name="address"><?=$datauser['address_user'] ?></textarea>
                         </div>
                     </div>
 
                     <div class="mb-3 row">
                         <label for="inputPassword" class="col-sm-2 col-form-label">Date Of Birth</label>
                         <div class="col-sm-10">
-                            <input type="date" class="form-control" name="birthdate" value="<?= date('Y-m-d', $datauser['birthdate_user']) ?>">
+                            <input type="date" class="form-control" name="birthdate" value="<?=date('Y-m-d', $datauser['birthdate_user']) ?>">
                         </div>
                     </div>
 
                     <div class="mb-5 row">
                         <label for="inputPassword" class="col-sm-2 col-form-label">Occupation</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" name="occ" value="<?= $datauser['occupation_user'] ?>" >
+                            <input type="text" class="form-control" name="occ" value="<?=$datauser['occupation_user'] ?>" >
                         </div>
                     </div>
                     <div class="mb-3">

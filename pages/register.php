@@ -1,17 +1,23 @@
 <?php
 session_start();
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
+{
     header("location: ./dashboard.php");
     exit;
 }
-function generateRandomString($length) {
-    return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
+function generateRandomString($length)
+{
+    return substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length / strlen($x)))) , 1, $length);
 }
 require_once "../config/config.php";
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-    if(!$_POST['name'] || !$_POST['email'] || !$_POST['dob'] || !$_POST['address'] || !$_POST['occ']){
+if ($_SERVER["REQUEST_METHOD"] == "POST")
+{
+    if (!$_POST['name'] || !$_POST['email'] || !$_POST['dob'] || !$_POST['address'] || !$_POST['occ'])
+    {
         echo "<script>alert('All input must be inserted')</script>";
-    }else{
+    }
+    else
+    {
         $name = htmlspecialchars($_POST['name']);
         $email = htmlspecialchars($_POST['email']);
         $dob = strtotime(htmlspecialchars($_POST['dob']));
@@ -21,10 +27,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
         $encrypt_pass = password_hash($pass, PASSWORD_DEFAULT);
         // Check email
         $users = mysqli_num_rows(mysqli_query($link, "SELECT * FROM tb_user WHERE email_user = '$email'"));
-        if($users === 0) {
+        if ($users === 0)
+        {
             $insert_query = mysqli_query($link, "INSERT INTO tb_user (name_user, email_user, password_user, address_user, birthdate_user, occupation_user) VALUES ('$name', '$email', '$encrypt_pass', '$address', '$dob', '$occ')");
 
-            if($insert_query){echo "<script>alert('Thank  you,  you  have  successfully  registered  as  our member.  use  your  email  and  password  as  follows: $pass to log into the system')</script>";}
+            if ($insert_query)
+            {
+                echo "<script>alert('Thank  you,  you  have  successfully  registered  as  our member.  use  your  email  and  password  as  follows: $pass to log into the system')</script>";
+            }
         }
         else echo "<script>alert('Email already exist!')</script>";
     }

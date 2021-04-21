@@ -1,22 +1,29 @@
 <?php
 session_start();
-require_once('../config/config.php');
-if(!$_SESSION["loggedin"]){
+require_once ('../config/config.php');
+if (!$_SESSION["loggedin"])
+{
     header("location: ./login.php");
     exit;
 }
-if($_GET['email']){
+if ($_GET['email'])
+{
     $email = htmlspecialchars($_GET['email']);
     $userdata = mysqli_query($link, "SELECT name_user, email_user, address_user, birthdate_user, occupation_user FROM tb_user WHERE email_user = '$email'");
-    if(mysqli_num_rows($userdata) !== 0){
+    if (mysqli_num_rows($userdata) !== 0)
+    {
         $datauser = mysqli_fetch_assoc($userdata);
-    }else{
+    }
+    else
+    {
         header("location: ./dashboard.php");
         exit;
-    }   
-}else{
-header("location: ./dashboard.php");
-exit;
+    }
+}
+else
+{
+    header("location: ./dashboard.php");
+    exit;
 }
 ?>
 <!DOCTYPE html>
@@ -38,35 +45,35 @@ exit;
                 <div class="mb-3 row">
                     <label for="inputPassword" class="col-sm-2 col-form-label">Full Name</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" value="<?= $datauser['name_user'] ?>" disabled>
+                        <input type="text" class="form-control" value="<?=$datauser['name_user'] ?>" disabled>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
                     <label for="inputPassword" class="col-sm-2 col-form-label">Email</label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control" value="<?= $datauser['email_user'] ?>" disabled>
+                        <input type="email" class="form-control" value="<?=$datauser['email_user'] ?>" disabled>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
                     <label for="inputPassword" class="col-sm-2 col-form-label">Address</label>
                     <div class="col-sm-10">
-                        <textarea class="form-control" disabled><?= $datauser['address_user'] ?></textarea>
+                        <textarea class="form-control" disabled><?=$datauser['address_user'] ?></textarea>
                     </div>
                 </div>
 
                 <div class="mb-3 row">
                     <label for="inputPassword" class="col-sm-2 col-form-label">Date Of Birth</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" disabled value="<?= date('d-m-Y', $datauser['birthdate_user']) ?>">
+                        <input type="text" class="form-control" disabled value="<?=date('d-m-Y', $datauser['birthdate_user']) ?>">
                     </div>
                 </div>
 
                 <div class="mb-5 row">
                     <label for="inputPassword" class="col-sm-2 col-form-label">Occupation</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" value="<?= $datauser['occupation_user'] ?>" disabled>
+                        <input type="text" class="form-control" value="<?=$datauser['occupation_user'] ?>" disabled>
                     </div>
                 </div>
 

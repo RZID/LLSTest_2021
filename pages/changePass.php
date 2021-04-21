@@ -1,29 +1,38 @@
-<?php 
+<?php
 session_start();
-require_once('../config/config.php');
-if(!$_SESSION['loggedin']){
+require_once ('../config/config.php');
+if (!$_SESSION['loggedin'])
+{
     header("location: ./login.php");
     exit;
 }
 $user_id = $_SESSION['id'];
 $userdata = mysqli_query($link, "SELECT * FROM tb_user WHERE id_user = '$user_id'");
 
-if($_SERVER["REQUEST_METHOD"] == "POST"){
+if ($_SERVER["REQUEST_METHOD"] == "POST")
+{
     $old = $_POST['old'];
     $new = $_POST['new'];
     $retype = $_POST['retype'];
-    if(!$_POST['old'] || !$_POST['new'] || !$_POST['retype']) echo "<script>alert('All input must be inserted')</script>";
-    else{
-        if($_POST['new'] !== $_POST['retype']){
+    if (!$_POST['old'] || !$_POST['new'] || !$_POST['retype']) echo "<script>alert('All input must be inserted')</script>";
+    else
+    {
+        if ($_POST['new'] !== $_POST['retype'])
+        {
             echo "<script>alert('New password and retype password must be same!')</script>";
         }
-        else{
-            if(!password_verify($old, mysqli_fetch_assoc($userdata)['password_user'])) {
+        else
+        {
+            if (!password_verify($old, mysqli_fetch_assoc($userdata) ['password_user']))
+            {
                 echo "<script>alert('Old password not match')</script>";
-            } else {
+            }
+            else
+            {
                 $pass = password_hash($new, PASSWORD_DEFAULT);
                 $update_pass = mysqli_query($link, "UPDATE tb_user SET password_user = '$pass'");
-                if($update_pass){
+                if ($update_pass)
+                {
                     echo "<script>alert('Password changed succesfully')</script>";
                 }
             }

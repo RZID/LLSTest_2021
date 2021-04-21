@@ -1,29 +1,39 @@
 <?php
 session_start();
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true)
+{
     header("location: ./dashboard.php");
     exit;
 }
 require_once "../config/config.php";
-if($_SERVER["REQUEST_METHOD"] == "POST"){
-    if(!$_POST['email'] || !$_POST['password']){
+if ($_SERVER["REQUEST_METHOD"] == "POST")
+{
+    if (!$_POST['email'] || !$_POST['password'])
+    {
         echo "<script>alert('All input must be inserted')</script>";
-    }else{
+    }
+    else
+    {
         $email = htmlspecialchars($_POST['email']);
         $pass = htmlspecialchars($_POST['password']);
         // Check email
         $users = mysqli_query($link, "SELECT * FROM tb_user WHERE email_user = '$email'");
-        if(mysqli_num_rows($users) !== 0) {
+        if (mysqli_num_rows($users) !== 0)
+        {
             $userdata = mysqli_fetch_assoc($users);
-            if(password_verify($pass, $userdata['password_user'])){
+            if (password_verify($pass, $userdata['password_user']))
+            {
                 $_SESSION['loggedin'] = true;
                 $_SESSION['id'] = $userdata['id_user'];
                 header('location: ./dashboard.php');
-            }else{
+            }
+            else
+            {
                 echo '<script>alert("You have entered wrong password!")</script>';
             }
         }
-        else {
+        else
+        {
             echo '<script>alert("Email does not exist!")</script>';
         }
     }
